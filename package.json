@@ -1,13 +1,11 @@
 {
-  "name": "react",
+  "name": "react-gfont-preview",
   "version": "1.0.0",
-  "description": "React example starter project",
-  "keywords": [
-    "react",
-    "starter"
-  ],
+  "description": "",
+  "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "normalize.css": "8.0.1",
     "prop-types": "15.8.1",
     "react": "18.0.0",
     "react-colorful": "5.5.1",

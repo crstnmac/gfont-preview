@@ -4,15 +4,18 @@ import { HexColorPicker } from "react-colorful";
 import Dropdown from "./components/Dropdown";
 import "./styles.css";
 import fonts from "./googleFonts.json";
+import "normalize.css";
 
 export default function App() {
   const [fontFamily, setFontFamily] = useState("Inter");
   const [font, setFont] = useState({
-    weight: 100,
+    weight: 500,
     size: 25,
     letterSpacing: 1,
-    color: "#aabbcc",
-    alignText: "left"
+    color: "#2805ff",
+    alignText: "left",
+    backgroundColor: "#f9f5f1",
+    lineHeight: "default"
   });
 
   const onFontSelect = (e) => {
@@ -39,6 +42,16 @@ export default function App() {
     setFont({ ...font, alignText: align(move) });
   };
 
+  const onClickDark = () => {
+    if (font.backgroundColor === "#123142") {
+      setFont({ ...font, backgroundColor: "#f9f5f1", color: "#520bff" });
+    } else setFont({ ...font, backgroundColor: "#123142", color: "#ffffff" });
+  };
+
+  const onChangeLineHeight = (e) => {
+    setFont({ ...font, lineHeight: e.target.value });
+  };
+
   const align = (move) => {
     switch (move) {
       case "right":
@@ -63,6 +76,8 @@ export default function App() {
               "300i",
               400,
               "400i",
+              500,
+              "500i",
               600,
               "600i",
               700,
@@ -73,7 +88,7 @@ export default function App() {
           }
         ]}
       />
-      <label>Weight</label>
+      <label>Weight: {font.weight}</label>
       <input
         type="range"
         min={100}
@@ -82,16 +97,18 @@ export default function App() {
         onChange={onChangeSliderWeight}
         value={font.weight}
       />
-      <label>Size</label>
+      <br />
+      <label>Size: {font.size}</label>
       <input
         type="range"
-        min={10}
+        min={8}
         default={font.size}
-        max={100}
+        max={280}
         onChange={onChangeSliderSize}
         value={font.size}
       />
-      <label>Letter Spacing</label>
+      <br />
+      <label>Letter Spacing : {font.letterSpacing}</label>
       <input
         type="range"
         min={1}
@@ -100,16 +117,26 @@ export default function App() {
         onChange={onChangeSliderSpace}
         value={font.letterSpacing}
       />
-
-      <HexColorPicker color={font.color} onChange={onChangeColor} />
-
+      <br />
+      <label>Leading : {font.lineHeight}</label>
+      <input
+        type="range"
+        min={0.5}
+        default={font.lineHeight}
+        max={3.0}
+        step={0.1}
+        onChange={onChangeLineHeight}
+        value={font.lineHeight}
+      />
+      <br />
+      <HexColorPicker color={font.color} onChange={onChangeColor} /> Color:
+      {font.color}
+      <br />
       <Dropdown value={fontFamily} options={fonts} onChange={onFontSelect} />
-
       <button onClick={() => onClickAlign("left")}>Left</button>
-
       <button onClick={() => onClickAlign("center")}>Center</button>
-
       <button onClick={() => onClickAlign("right")}>Right</button>
+      <button onClick={onClickDark}>BG dark</button>
       <div
         style={{
           fontFamily: fontFamily,
@@ -117,7 +144,9 @@ export default function App() {
           letterSpacing: font.letterSpacing + "px",
           color: font.color,
           border: "2px solid black",
-          textAlign: font.alignText
+          textAlign: font.alignText,
+          backgroundColor: font.backgroundColor,
+          lineHeight: font.lineHeight + "em"
         }}
       >
         <h1 style={{ fontWeight: font.weight }}>Hello CodeSandbox</h1>
