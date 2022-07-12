@@ -1,0 +1,42 @@
+.input{
+    width: 100%;
+    padding: 12px 0px;
+    margin: 8px 0;
+    display: inline-block;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.input:focus{
+    outline: none;
+}
+
+.card {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    width:100%;
+    margin: 0;
+    text-align: left;
+}
+
+.options{
+    display: flex;
+    flex:1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+}
+
+.variants {
+    font-weight: 600;
+    font-size: 1.6em;
+}
+
+@media screen and (max-width: 1200px) {
+    .options{
+        width: 100%;
+    }
+}
+    

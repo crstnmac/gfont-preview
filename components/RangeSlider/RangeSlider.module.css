@@ -1,0 +1,111 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  text-align: right;
+  margin-right: 10px;
+  width: 100px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.slider {
+  height: 25px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+.slider:focus {
+  outline: none;
+}
+.slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #000203;
+  border-radius: 0px;
+  border: 0px solid #000000;
+}
+.slider::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid #000000;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8.5px;
+  -webkit-transition: background 150ms linear;
+  -moz-transition: background 150ms linear;
+  -o-transition: background 150ms linear;
+  -ms-transition: background 150ms linear;
+  transition: background 150ms linear;
+}
+.slider:hover::-webkit-slider-thumb {
+  background: #000000;
+}
+.slider:focus::-webkit-slider-runnable-track {
+  background: #000000;
+}
+.slider::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #000203;
+  border-radius: 0px;
+  border: 0px solid #000000;
+}
+.slider::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid #000000;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.slider::-ms-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.slider::-ms-fill-lower {
+  background: #000203;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000;
+}
+.slider::-ms-fill-upper {
+  background: #000203;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000;
+}
+.slider::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid #000000;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.slider:focus::-ms-fill-lower {
+  background: #000203;
+}
+.slider:focus::-ms-fill-upper {
+  background: #000203;
+}
