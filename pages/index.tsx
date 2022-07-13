@@ -1,41 +1,42 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
-import { StyleCard } from '../components/StyleCard'
-import useFetchFonts from '../hooks/fetchFonts'
-import styles from '../styles/Home.module.css'
-import { Font } from '../types/schema'
-import dynamic from 'next/dynamic'
-import Dropdown from '../components/DropDown/DropDown'
+import type { NextPage } from "next";
+import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import { StyleCard } from "../components/StyleCard";
+import useFetchFonts from "../hooks/fetchFonts";
+import styles from "../styles/Home.module.css";
+import { Font } from "../types/schema";
+import { Dropdown } from "react-dropdown-now";
+import "react-dropdown-now/style.css";
 
 function fontDataToCSS(data: Font) {
-  const fontFacesList: string[] = []
+  const fontFacesList: string[] = [];
 
-  const { subsets, family, variants, files } = data
+  const { subsets, family, variants, files } = data;
 
   variants.map((variant, index) => {
-    const weight = variants[index] === 'regular' ? '400' : variants[index]
-    const url = files[variant]
-    const surl = url.slice(0, 4) + 's' + url.slice(4)
+    const weight = variants[index] === "regular" ? "400" : variants[index];
+    const url = files[variant];
+    const surl = url.slice(0, 4) + "s" + url.slice(4);
 
     fontFacesList.push(`
       @font-face {
-        font-family: '${family} script=${subsets.includes('latin') ? 'latin' : subsets[0]
-      } rev=1';
-        font-style: ${weight.includes('italic') ? 'italic' : 'normal'};
-        font-weight: ${weight.includes('italic') ? weight.slice(0, 3) : weight};
+        font-family: '${family} script=${
+      subsets.includes("latin") ? "latin" : subsets[0]
+    } rev=1';
+        font-style: ${weight.includes("italic") ? "italic" : "normal"};
+        font-weight: ${weight.includes("italic") ? weight.slice(0, 3) : weight};
         font-display: block;
         src: url(${surl}) format('woff2');
       }
-    `)
-  })
+    `);
+  });
 
-  return fontFacesList
+  return fontFacesList;
 }
 
 const Home: NextPage = () => {
   useEffect(() => {
-    const style = document.createElement('style')
+    const style = document.createElement("style");
     style.innerHTML = `
     @font-face {
       font-family: 'Nuosu SIL script=latin rev=1';
@@ -44,88 +45,103 @@ const Home: NextPage = () => {
       font-display: block;
       src: url(https://fonts.gstatic.com/l/font?kit=8vIK7wM3wmRn_kc4uAjeEWxdO_3C7D6IQ8ukaiI9CMO9OyN_kBHy6Q6lbi4&skey=d5abc6cd0675e9e8&v=v1) format('woff2');
     }
-    `
-    document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
 
     return () => {
-      document.head.removeChild(style)
-    }
-  }, [])
+      document.head.removeChild(style);
+    };
+  }, []);
 
-  const { data } = useFetchFonts()
-  const [fontSize, setFontSize] = useState(64)
-  const [index, setIndex] = useState(0)
+  const { data } = useFetchFonts();
+  const [fontSize, setFontSize] = useState(64);
 
-  const fontsList = (data?.map((d) => d.family))
-  const [selectedFont, setSelectedFont] = useState("Exo 2")
+  const fontsList = data?.map((d) => d.family);
+  const [selectedFont, setSelectedFont] = useState("Inter");
 
-  const fontDetails = data?.find((d) => d.family === selectedFont)
+  const fontDetails = data?.find((d) => d.family === selectedFont);
 
-  const [selectedFontStyle, setSelectedFontStyle] = useState("regular")
+  const initialVariant = fontDetails?.variants[0];
 
-  const handleDropDownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setIndex(0)
-    setSelectedFont(e.target.value)
-    setSelectedFontStyle("regular")
-  }
-  const handleFontStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFontStyle(e.target.value)
-    setIndex(e.target.selectedIndex)
-  }
+  const [selectedFontStyle, setSelectedFontStyle] = useState(initialVariant);
+
+  const selectedVariantIndex =
+    fontDetails?.variants.findIndex((v) => v === selectedFontStyle) ?? 0;
+  const [index, setIndex] = useState(selectedVariantIndex);
 
   if (!fontDetails) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
+  let fontStyles = fontDetails.variants
+    .map((v, index) => {
+      return v;
+    })
+    .filter((v, i, a) => a.indexOf(v) === i);
 
-  let variantStyles = []
-  const fontFaces = fontDataToCSS(fontDetails)
+  let variantStyles = [];
+  const fontFaces = fontDataToCSS(fontDetails);
 
-  const { subsets, family } = fontDetails
+  const { subsets, family } = fontDetails;
 
   for (let i = 0; i < fontDetails.variants.length; i++) {
-    if (fontDetails.variants[i].includes('italic')) {
+    if (fontDetails.variants[i].includes("italic")) {
       const props = {
-        fontFamily: `"${family} script=${subsets.includes('latin') ? 'latin' : subsets[0]
-          } rev=1"`,
-        fontWeight: `${fontDetails.variants[i].slice(0, 3) === 'ita'
-          ? '400'
-          : fontDetails.variants[i].slice(0, 3)
-          }`,
+        fontFamily: `"${family} script=${
+          subsets.includes("latin") ? "latin" : subsets[0]
+        } rev=1"`,
+        fontWeight: `${
+          fontDetails.variants[i].slice(0, 3) === "ita"
+            ? "400"
+            : fontDetails.variants[i].slice(0, 3)
+        }`,
         fontStyle: `italic`,
         fontStretch: `normal`,
         lineHeight: `initial`,
         fontSize: fontSize,
         textAlign: `left`,
-        fontCategory: fontDetails.category,
-      }
-      variantStyles.push(props)
+        fontCategory: fontDetails.category
+      };
+      variantStyles.push(props);
     } else {
       const props = {
-        fontFamily: `"${family} script=${subsets.includes('latin') ? 'latin' : subsets[0]
-          } rev=1"`,
-        fontWeight: `${fontDetails.variants[i] === 'regular'
-          ? '400'
-          : fontDetails.variants[i]
-          }`,
+        fontFamily: `"${family} script=${
+          subsets.includes("latin") ? "latin" : subsets[0]
+        } rev=1"`,
+        fontWeight: `${
+          fontDetails.variants[i] === "regular"
+            ? "400"
+            : fontDetails.variants[i]
+        }`,
         fontStyle: `regular`,
         fontStretch: `normal`,
         lineHeight: `initial`,
         fontSize: fontSize,
         textAlign: `left`,
-        fontCategory: fontDetails.category,
-      }
-      variantStyles.push(props)
+        fontCategory: fontDetails.category
+      };
+      variantStyles.push(props);
     }
-
   }
 
-  const selectedVariant = variantStyles[index]
+  const selectedVariant = variantStyles[index];
+  const fontStylesArray = fontStyles.map((v, i) => {
+    return {
+      value: v,
+      label: v
+    };
+  });
 
-  let fontStyles = fontDetails.variants.map((v) => {
-    return v
-  }).filter((v, i, a) => a.indexOf(v) === i)
-  console.log(selectedVariant)
+  const handleFontStyleChange = (e: any) => {
+    setIndex(fontStylesArray.findIndex((d) => d.value === e.value));
+    console.log(fontStylesArray.findIndex((d) => d.value === e.value));
+    setSelectedFontStyle(e.value);
+  };
 
+  const handleDropDownChange = (e: any) => {
+    setSelectedFont(e.value);
+    setSelectedFontStyle(initialVariant);
+    setIndex(0);
+  };
 
   return (
     <div className={styles.container}>
@@ -138,17 +154,32 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <>
           <div className={styles.gridRow}>
-            <Dropdown label='Fonts' options={fontsList ?? []} value={selectedFont} onChange={handleDropDownChange} />
+            <Dropdown
+              options={fontsList ?? []}
+              value={selectedFont}
+              onChange={(e) => handleDropDownChange(e)}
+            />
 
-            <Dropdown label='Variants' options={fontStyles} value={selectedFontStyle} key={fontStyles.indexOf(selectedFont)} onChange={handleFontStyleChange} />
+            <Dropdown
+              options={fontStylesArray}
+              value={selectedFontStyle}
+              onChange={handleFontStyleChange}
+            />
           </div>
 
-          <StyleCard style={fontFaces[index]} key={selectedVariant.fontStyle + selectedVariant.fontSize + selectedVariant.fontWeight} variant={selectedVariant} />
+          <StyleCard
+            style={fontFaces[index]}
+            key={
+              selectedVariant.fontStyle +
+              selectedVariant.fontSize +
+              selectedVariant.fontWeight
+            }
+            variant={selectedVariant}
+          />
         </>
       </main>
     </div>
-  )
-}
+  );
+};
 
-
-export default Home
+export default Home;
